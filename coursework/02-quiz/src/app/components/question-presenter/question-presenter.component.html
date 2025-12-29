@@ -1,0 +1,17 @@
+@let q = question();
+<h1>
+  Question: What do you get when you add @for (color of q.caption; track color)
+  { @if($index > 0) { @if ($last) { and } @else { , } }
+
+  {{ color | colorName }}
+  <span class="color-item" [style.background]="color"></span>
+  } ?
+</h1>
+<div class="answers">
+  @for(answer of q.answers; track answer) {
+  <div class="answer">
+    <div class="thumbnail" [style.background]="answer"></div>
+    <div class="caption">{{ answer | colorName }}</div>
+  </div>
+  }
+</div>
