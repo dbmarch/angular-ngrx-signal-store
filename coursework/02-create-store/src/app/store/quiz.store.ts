@@ -20,6 +20,7 @@ export const QuizStore = signalStore(
       const isDone = computed(() => store.answers().length === store.questions().length);
       const currentQuestion = computed(() => store.questions()[currentQuestionIndex()]);
 
+      // return the list of key value pairs { currentQuestionIndex: currentQuestionIndex, ...}
       return {
          currentQuestionIndex,
          isDone,
