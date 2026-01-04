@@ -1,4 +1,4 @@
-import { Component, computed, Input, signal } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { SharedModule } from '../../shared.module';
 
 @Component({
@@ -8,9 +8,9 @@ import { SharedModule } from '../../shared.module';
     styleUrl: './done.component.scss'
 })
 export class DoneComponent {
-  readonly correct = signal(3);
+  readonly correct = input.required<number>();
 
-  readonly total = signal(8);
+  readonly total = input.required<number>();
 
   readonly score = computed(() => this.correct() / this.total());
 

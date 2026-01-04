@@ -13,4 +13,9 @@ import { QuizStore } from '../../store/quiz.store';
 export class QuestionPresenterComponent {
   readonly store = inject(QuizStore);
   readonly question = this.store.currentQuestion;
+
+  selectAnswer(index: number) {
+    console.log('selectAnswer', index);
+    this.store.addAnswer(index);
+  }
 }
