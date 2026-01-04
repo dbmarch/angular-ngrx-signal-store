@@ -9,11 +9,11 @@ import { QuizStore } from '../../store/quiz.store';
     styleUrl: './progress.component.scss'
 })
 export class ProgressComponent {
-  readonly store = inject(QuizStore);
   readonly value = input.required<number>();
 
   readonly max = input.required<number>();
 
   readonly ratio = computed(() => this.value() / this.max());
+
 
 }

@@ -1,9 +1,13 @@
-import { signalStore, withComputed, withState } from "@ngrx/signals";
+import { patchState, signalStore, withComputed, withState, withMethods} from "@ngrx/signals";
 import { initialQuizSlice } from "./quiz.slice";
 import { computed } from "@angular/core";
+import { addAnswer, resetQuiz} from "./quiz.updaters";
 
 export const QuizStore = signalStore(
-    { providedIn: 'root'}, 
+    { 
+        providedIn: 'root',
+        // protectedState: true    // default.  false lets you write the store externally
+    }, 
     withState(initialQuizSlice),
     withComputed((store) => {
         const currentQuestionIndex = computed(() => store.answers().length);
@@ -17,7 +21,12 @@ export const QuizStore = signalStore(
             currentQuestion,
             questionCount
         };
-    })
+    }),
+    withMethods(store => ({
+        addAnswer: (index: number) => patchState(store, addAnswer(index)),
+        reset: () => patchState(store, resetQuiz())
+        })
+    ) 
 );
 
 
