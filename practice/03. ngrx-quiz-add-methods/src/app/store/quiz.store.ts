@@ -2,18 +2,8 @@ import { signalStore, withComputed, withState, withMethods, patchState} from "@n
 import { initialQuizSlice } from "./quiz.slice";
 import { computed } from "@angular/core";
 import { addAnswer, reset } from "./quiz.updaters";
-import { map } from "rxjs";
-import { Question } from '../models/question.model';
+import { checkAnswers } from './quiz.helpers'
 
-
-const checkAnswers = (questions: Question[], answers: number[]) => {
-    let correct=0;
-    
-    answers.forEach((answer, index) => 
-        correct += questions[index].correctIndex === answer ? 1 : 0);
-    console.log('correct', correct);
-    return correct;
-}
 
 export const QuizStore = signalStore(
     { providedIn: 'root'}, 

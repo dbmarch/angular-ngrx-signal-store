@@ -1,6 +1,6 @@
 @let q = question();
 <h1>
-  Question: What do you get when you add @for (color of q.caption; track color)
+  Question: What do you get when you add @for (color of q.caption; track $index)
   { @if($index > 0) { @if ($last) { and } @else { , } }
 
   {{ color | colorName }}
