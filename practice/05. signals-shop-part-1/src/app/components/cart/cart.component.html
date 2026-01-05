@@ -1,24 +1,28 @@
-<div class="overlay"></div>
+@let vm = store.cartVm();
+
+<div class="overlay" (click)="store.hideCart()"></div>
 <div class="content">
-  <h1>Your Cart ({{ cartItems().length }} items)</h1>
+  <h1>Your Cart ({{ vm.items.length }} items)</h1>
   <div class="items">
-    @for (item of cartItems(); track item.id) {
+    @for (item of vm.items; track item.id) {
     <app-cart-item [item]="item" />
     <hr />
     }
   </div>
   <div class="subtotal">
     <div class="label">Subtotal:</div>
-    <div class="value">{{ subtotal() | currency }}</div>
+    <div class="value">{{ vm.subtotal | currency }}</div>
   </div>
   <div class="tax">
     <div class="label">Tax:</div>
-    <div class="value">{{ tax() | currency }}</div>
+    <div class="value">{{ vm.tax | currency }}</div>
   </div>
   <div class="total">
     <div class="label">Total:</div>
-    <div class="value">{{ total() | currency }}</div>
+    <div class="value">{{ vm.total | currency }}</div>
   </div>
   <div class="actions">
-    <button mat-flat-button>Checkout</button>
+    <button mat-flat-button 
+      [disabled]="!vm.canCheckout"
+      (click)="store.checkoutCart()">Checkout</button>
 </div>

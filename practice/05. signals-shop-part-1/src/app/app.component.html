@@ -2,6 +2,6 @@
 <img src="background.jpg">
 <app-items-list/>
 
-@if (isCartShowing()) {
+@if (store.cartVm().isVisible) {
     <app-cart/>
 }
