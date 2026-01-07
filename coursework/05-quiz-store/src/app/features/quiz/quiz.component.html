@@ -1,5 +1,5 @@
 <app-toolbar caption="Colors Quiz" icon="palette">
-    <app-flag [of]="appStore.selectedLanguage()" 
+    <app-flag [of]="appStore.selectedlanguage()" 
         matTooltip="Change Language" 
         (click)="appStore.changeLanguage()"
         />
@@ -7,15 +7,15 @@
         (click)="store.reset()">
         <mat-icon>restart_alt</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Generate New Quiz"
-        (click)="store.generateQuiz()">
+    <button mat-icon-button matTooltip="Generate New Quiz">
+        <!-- (click)="store.generateQuiz()" -->
         <mat-icon>auto_fix_high</mat-icon>
     </button>
 </app-toolbar>
 <div class="main">
-    @if(store.isBusy()) {
+    <!-- @if(store.isBusy()) {
         <app-busy/>
-    }
+    } -->
     @if(store.isDone()) {
         <app-done/>
     } @else {

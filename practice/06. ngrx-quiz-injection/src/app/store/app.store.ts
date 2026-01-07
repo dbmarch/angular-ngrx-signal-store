@@ -1,18 +1,24 @@
-import { inject } from "@angular/core";
-import { DICTIONARIES_TOKEN } from "../tokens/dictionaries.token";
+import { withState, signalStore, patchState, withHooks, withMethods,  } from "@ngrx/signals";
 import { initialAppSlice } from "./app.slice";
-import { withState, signalStore, patchState, withHooks, withMethods } from "@ngrx/signals";
+import { DICTIONARIES_TOKEN } from "../tokens/dictionaries.token";
+import { inject } from "@angular/core";
 import { changeLanguage } from "./app.updaters";
 
-export const AppStore = signalStore(
-   { providedIn: 'root'},
+export const AppStore = signalStore (
+   {
+      providedIn: 'root',
+   },
    withState(initialAppSlice),
    withMethods(store => {
       const dictionaries = inject(DICTIONARIES_TOKEN);
       const languages = Object.keys(dictionaries);
+
       return {
-            changeLanguage: () => patchState(store, changeLanguage(languages))
-         }
+            changeLanguage: () => {
+               console.log('Changing language...');
+             return  patchState(store, changeLanguage(languages))
+            }
+      }
    }),
    withHooks(store => ({
       onInit: () => {
@@ -20,8 +26,10 @@ export const AppStore = signalStore(
          const languages = Object.keys(dictionaries);
          patchState(store, {
             possibleLanguages: languages,
-            selectedlanguage: languages[0]
+            selectedLanguage: languages[0]
          })
       }
-   }))
+   })),
+
 )
+

@@ -13,14 +13,22 @@ export const QuizStore = signalStore(
         const currentQuestion = computed(() => store.questions()[currentQuestionIndex()]);
         const questionsCount = computed(() => store.questions().length);
         const correctCount = computed(() => getCorrectCount(store.answers(), store.questions()));
-
+        
+        const answerColors = computed(() => []);
+        const title = computed(() => 'title');
+        const captionColors= computed(() => ['red', 'green']);
+        const name = computed(() => 'name');
 
         return {
             currentQuestionIndex,
             isDone, 
             currentQuestion, 
             questionsCount, 
-            correctCount, 
+            correctCount,
+            answerColors,
+            title,
+            captionColors,
+            name 
         }
     }), 
     withMethods(store => ({

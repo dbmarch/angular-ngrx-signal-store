@@ -1,5 +1,5 @@
 <app-toolbar caption="Colors Quiz" icon="palette">
-    <app-flag of="en" matTooltip="Change Language" 
+    <app-flag [of]="appStore.selectedLanguage()" (click)="appStore.changeLanguage()" matTooltip="Change Language" 
         />
     <button mat-icon-button matTooltip="Reset Quiz"
         (click)="store.reset()">

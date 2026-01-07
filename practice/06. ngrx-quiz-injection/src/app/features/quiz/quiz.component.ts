@@ -6,6 +6,7 @@ import { ProgressComponent } from '../../components/progress/progress.component'
 import { DoneComponent } from './components/done/done.component';
 import { FlagComponent } from '../../components/flag/flag.component';
 import { QuizStore } from './store/quiz.store';
+import { AppStore } from '../../store/app.store';
 
 @Component({
   selector: 'app-quiz-page',
@@ -16,5 +17,6 @@ import { QuizStore } from './store/quiz.store';
 })
 export default class QuizPageComponent {
   readonly store = inject(QuizStore);
+  readonly appStore = inject(AppStore);
 
 }

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { SharedModule } from '../../../../shared.module';
-import { QuizStore } from '../../store/quiz.store';
+import { QuizStore } from '../../../quiz/store/quiz.store'
 
 @Component({
     selector: 'app-question-presenter',

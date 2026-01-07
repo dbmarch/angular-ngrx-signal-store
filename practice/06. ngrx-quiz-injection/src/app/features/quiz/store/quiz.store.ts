@@ -15,6 +15,7 @@ export const QuizStore = signalStore(
         const currentQuestion = computed(() => store.questions()[currentQuestionIndex()]);
         const questionsCount = computed(() => store.questions().length);
         const correctCount = computed(() => getCorrectCount(store.answers(), store.questions()));
+        
 
 
         return {

@@ -1,16 +1,17 @@
+@let question = store.currentQuestion();
 <h1>
-  {{store.title()}} @for (record of store.captionColors(); track $index)
+  What do you get when you Add @for (color of question.caption; track $index)
   { @if($index > 0) { @if ($last) { and } @else { , } }
 
-  {{ record.name }}
-  <span class="color-item" [style.background]="record.key"></span>
+  {{ color | colorName }}
+  <span class="color-item" [style.background]="color"></span>
   } ?
 </h1>
 <div class="answers">
-  @for(record of store.answerColors(); track $index) {
+  @for(answer of question.answers; track $index) {
   <div class="answer" (click)="store.addAnswer($index)">
-    <div class="thumbnail" [style.background]="record.key"></div>
-    <div class="caption">{{ record.name }}</div>
+    <div class="thumbnail" [style.background]="answer"></div>
+    <div class="caption">{{ answer | colorName }}</div>
   </div>
   }
 </div>

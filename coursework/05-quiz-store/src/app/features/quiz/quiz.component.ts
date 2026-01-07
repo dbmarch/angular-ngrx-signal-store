@@ -5,8 +5,8 @@ import { ToolbarComponent } from '../../components/toolbar/toolbar.component';
 import { ProgressComponent } from '../../components/progress/progress.component';
 import { DoneComponent } from './components/done/done.component';
 import { FlagComponent } from '../../components/flag/flag.component';
-// import { QuizStore } from './store/quiz.store';
-// import { AppStore } from '../../store/app.store';
+import { QuizStore } from './store/quiz.store';
+import { AppStore } from '../../store/app.store';
 import { BusyComponent } from "../../components/busy/busy.component";
 
 @Component({
@@ -16,7 +16,7 @@ import { BusyComponent } from "../../components/busy/busy.component";
   styleUrl: './quiz.component.scss', 
 })
 export default class QuizPageComponent {
-  // readonly appStore = inject(AppStore);
-  // readonly store = inject(QuizStore);
+  readonly appStore = inject(AppStore);
+  readonly store = inject(QuizStore);
 
 }

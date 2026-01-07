@@ -1,6 +1,6 @@
 <div class="brand" routerLink="/home">
     @if (icon()) {
-        <mat-icon>{{icon()}}</mat-icon>
+        <mat-icon (click)="appStore.changeLanguage()">{{icon()}}</mat-icon>
     }
     {{caption()}}    
 </div>
