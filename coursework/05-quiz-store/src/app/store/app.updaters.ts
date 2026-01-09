@@ -9,3 +9,10 @@ export function changeLanguage(languages: string[]): PartialStateUpdater<AppSlic
       return { selectedlanguage};
    } 
 }
+
+export function resetLanguages(languages: string[]): PartialStateUpdater<AppSlice> {
+   return _ => ({
+      possibleLanguages: languages,
+      selectedlanguage: languages[0]
+   });
+}
