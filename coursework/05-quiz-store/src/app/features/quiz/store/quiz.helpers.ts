@@ -8,6 +8,6 @@ export function getCorrectCount(answers: number[], questions: Question[]): numbe
             res++;
         }
     }
-
     return res;  
 }
+

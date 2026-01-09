@@ -3,21 +3,28 @@ import { initialQuizSlice, QuizSlice } from "./quiz.slice";
 import { computed, effect, inject } from "@angular/core";
 import { addAnswer, resetQuiz } from "./quiz.updaters";
 import { getCorrectCount } from "./quiz.helpers";
+import { translate, translateToPairs } from "../../../store/app.helpers";
+import { QUESTION_CAPTION } from "../../../data/dictionaries";
+import { AppStore } from "../../../store/app.store";
 
 export const QuizStore = signalStore(
     withState(initialQuizSlice), 
     withComputed((store) => {
         console.log('With Computed Feature Parameter is executed');
+        const appStore = inject(AppStore);
+        const dictionary = appStore.selectedDictionary;
         const currentQuestionIndex = computed(() => store.answers().length);
         const isDone = computed(() => store.answers().length === store.questions().length);
         const currentQuestion = computed(() => store.questions()[currentQuestionIndex()]);
         const questionsCount = computed(() => store.questions().length);
         const correctCount = computed(() => getCorrectCount(store.answers(), store.questions()));
         
-        const answerColors = computed(() => []);
-        const title = computed(() => 'title');
-        const captionColors= computed(() => ['red', 'green']);
+        
+        const title = computed(() => translate(QUESTION_CAPTION, dictionary()));
         const name = computed(() => 'name');
+        
+        const captionColors = computed(() =>translateToPairs(currentQuestion().caption, dictionary()));
+        const answerColors = computed(() => translateToPairs(currentQuestion().answers, dictionary()));
 
         return {
             currentQuestionIndex,
@@ -25,9 +32,9 @@ export const QuizStore = signalStore(
             currentQuestion, 
             questionsCount, 
             correctCount,
-            answerColors,
             title,
             captionColors,
+            answerColors,
             name 
         }
     }), 
