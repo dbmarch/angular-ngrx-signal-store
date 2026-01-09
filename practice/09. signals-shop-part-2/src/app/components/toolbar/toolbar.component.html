@@ -1,4 +1,4 @@
-@let vm = store.cartVm();
+@let vm = store.vm();
 
 <mat-icon class="logo">sensors</mat-icon>
 <span>The Signals Shop</span>
@@ -8,9 +8,9 @@
     (ngModelChange)="store.setSearchWord($event)"
     />
 <button mat-icon-button class="cart-button"
-    [matBadge]="vm.itemsCount"
-    [matBadgeHidden]="!vm.isActive"
-    [disabled]="!vm.isActive"
+    [matBadge]="vm.cartItemsCount"
+    [matBadgeHidden]="!vm.isCartActive"
+    [disabled]="!vm.isCartActive"
     (click)="store.viewCart()"
     >
     <mat-icon class="cart">shopping_cart</mat-icon>

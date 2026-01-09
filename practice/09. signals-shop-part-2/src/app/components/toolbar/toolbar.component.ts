@@ -14,4 +14,8 @@ import { ShopStore } from '../../store/shop.store';
 })
 export class ToolbarComponent {
   readonly store = inject(ShopStore);
+
+  onEnter() {
+    console.log ('onEnter');
+  }
 }

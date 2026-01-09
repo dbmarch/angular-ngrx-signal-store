@@ -1,3 +1,7 @@
-export interface ProductListSlice {}
 
-export const initialProductListSlice: ProductListSlice = {};
+export interface ProductListSlice {
+}
+
+export const initialProductListSlice: ProductListSlice = {
+
+};
