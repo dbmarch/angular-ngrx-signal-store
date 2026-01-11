@@ -26,7 +26,7 @@ export default class BookPresenterComponent {
 
 
   constructor() {
-    effect(() => this.store.setBookId(this.id()));
+    this.store.setBookId(this.id);
   }
 
 
