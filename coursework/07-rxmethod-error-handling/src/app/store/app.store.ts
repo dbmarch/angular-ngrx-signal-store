@@ -50,14 +50,17 @@ export const AppStore = signalStore(
 
         ))
 
+        // Calling it once with the signal will setup to run every time the signal changes
+        _invalidateDictionary(store.selectedLanguage);
+
         return {
             _resetLanguages: () => {
-                patchState(store, resetLanguages(store._languages)),
-                _invalidateDictionary(store.selectedLanguage());
+                patchState(store, resetLanguages(store._languages));
+                // _invalidateDictionary(store.selectedLanguage());
             },
             changeLanguage: () => {
                 patchState(store, changeLanguage(store._languages));
-                _invalidateDictionary(store.selectedLanguage());
+                // _invalidateDictionary(store.selectedLanguage());
             }
         }
     }),
