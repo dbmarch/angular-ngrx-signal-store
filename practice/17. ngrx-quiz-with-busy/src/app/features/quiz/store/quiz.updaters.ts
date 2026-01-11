@@ -20,9 +20,3 @@ export function resetQuestions(questions: Question[]): PartialStateUpdater<QuizS
         answers: []
     })
 }
-
-export function setBusy(isBusy: boolean): PartialStateUpdater<QuizSlice> {
-    return _ => ({
-        isBusy
-    })
-}
