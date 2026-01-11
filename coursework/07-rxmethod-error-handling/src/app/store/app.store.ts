@@ -31,13 +31,11 @@ export const AppStore = signalStore(
             map((lang: string) => store._dictionariesService
                 .getDictionaryWithDelay(lang).pipe(
                 tapResponse({
-                    next: dict => patchState(store, setDictionary(dict), setBusy(false)),
-                    error: err => {
-                        console.log('Error loading dictionary:', err);
-                        store._notificationsService.error(`${err}`)
-                        patchState(store, setBusy(false));
+                    next: dict => patchState(store, setDictionary(dict)),
+                    error: err => store._notificationsService.error(`${err}`),
+                    finalize: () => patchState(store, setBusy(false))
                     }
-                })),
+                )),
                 ),
             switchAll(),  // mergAll gives us all obervables, switchAll only the latest
         ))
