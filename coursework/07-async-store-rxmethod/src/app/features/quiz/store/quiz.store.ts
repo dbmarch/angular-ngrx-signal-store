@@ -1,4 +1,4 @@
-import { getState, patchState, signalStore, withComputed, withHooks, withMethods, withState } from "@ngrx/signals";
+import { getState, patchState, signalStore, withComputed, withHooks, withProps, withMethods, withState } from "@ngrx/signals";
 import { initialQuizSlice, QuizSlice } from "./quiz.slice";
 import { computed, effect, inject } from "@angular/core";
 import { addAnswer, resetQuiz } from "./quiz.updaters";
@@ -6,9 +6,21 @@ import { getCorrectCount } from "./quiz.helpers";
 import { translate, translateToPairs } from "../../../store/app.helpers";
 import { QUESTION_CAPTION } from "../../../data/dictionaries";
 import { AppStore } from "../../../store/app.store";
+import {ColorQuizGeneratorService} from "../../../services/color-quiz-generator.service";
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { tap, map, exhaustAll } from "rxjs/operators";
+import { setBusy } from "./quiz.updaters";
+import { resetQuestions } from "./quiz.updaters";
 
 export const QuizStore = signalStore(
     withState(initialQuizSlice), 
+    withProps(_ => {
+        const _quizGeneratorService = inject(ColorQuizGeneratorService);
+
+        return {
+            _quizGeneratorService
+        }
+    }),
     withComputed((store) => {
         const appStore = inject(AppStore);
         const dictionary = appStore.selectedDictionary;
@@ -30,19 +42,35 @@ export const QuizStore = signalStore(
             correctCount, 
             title,
             captionColors,
-            answerColors
+            answerColors,
         }
     }), 
     withMethods(store => ({
-        addAnswer: (index: number) => patchState(store, addAnswer(index)),
-        reset: () => patchState(store, resetQuiz())
-    })), 
+            addAnswer: (index: number) => patchState(store, addAnswer(index)),
+            reset: () => patchState(store, resetQuiz()),
+            generateNewQuiz: rxMethod<void>(trigger$ => trigger$.pipe(
+                tap(_ => {
+                    console.log('Generating new quiz...');
+                    patchState(store, setBusy(true));
+                }),
+                map(_ => store._quizGeneratorService.createRandomQuizAsync()),
+                exhaustAll(),
+                tap(questions => patchState( store, setBusy(false), resetQuestions(questions))
+                )))
+        }
+    )), 
     withHooks(store => ({
         onInit: () => {
+
             const stateJson = localStorage.getItem('quiz');
             if (stateJson) {
                 const state = JSON.parse(stateJson) as QuizSlice;
                 patchState(store, state);
+                if (state.questions.length === 0) {
+                    store.generateNewQuiz();
+                }
+            } else {
+                store.generateNewQuiz();
             }
 
             effect(() => {

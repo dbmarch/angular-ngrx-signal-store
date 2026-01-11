@@ -8,9 +8,10 @@ import { FlagComponent } from '../../components/flag/flag.component';
 import { QuizStore } from './store/quiz.store';
 import { AppStore } from '../../store/app.store';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { BusyComponent } from "../../components/busy/busy.component";
 @Component({
   selector: 'app-quiz-page',
-  imports: [SharedModule, QuestionPresenterComponent, ToolbarComponent, ProgressComponent, DoneComponent, FlagComponent],
+  imports: [SharedModule, QuestionPresenterComponent, ToolbarComponent, ProgressComponent, DoneComponent, FlagComponent, BusyComponent],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.scss', 
 })

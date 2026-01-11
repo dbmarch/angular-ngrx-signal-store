@@ -5,30 +5,27 @@ import { changeLanguage, resetLanguages } from "./app.updaters";
 import { setBusy } from "./app.updaters";
 import { DictionariesService } from "../services/dictionaries.service";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
-import { tap, delay } from "rxjs/operators";
+import { tap } from "rxjs/operators";
+import { map, switchAll } from "rxjs/operators";
+import { setDictionary } from "./app.updaters";
 
 export const AppStore = signalStore(
     { providedIn: 'root' }, 
     withState(initialAppSlice), 
     withProps(_ => {
-        const _dictionaries = inject(DictionariesService);
-        const _languages = _dictionaries.languages;
+        const _dictionariesService = inject(DictionariesService);
+        const _languages = _dictionariesService.languages;
 
         return {
-            _dictionaries, _languages
+            _dictionariesService, _languages
         }
     }),
     withMethods(store => {
         const _invalidateDictionary = rxMethod<string>(input$ => input$.pipe(
-            tap(lang => {
-                console.log('invalidate dictionary for', lang);
-                patchState(store, setBusy(true));
-            }),
-            delay(1000),
-            tap(lang=> {
-                console.log('dictionary loaded for', lang);
-                patchState(store, setBusy(false));
-            })
+            tap(_ => patchState(store, setBusy(true))),
+            map((lang: string) => store._dictionariesService.getDictionaryWithDelay(lang)),
+            switchAll(),  // mergAll gives us all obervables, switchAll only the latest
+            tap(dict => patchState(store, setDictionary(dict), setBusy(false)))
         ))
 
         return {
