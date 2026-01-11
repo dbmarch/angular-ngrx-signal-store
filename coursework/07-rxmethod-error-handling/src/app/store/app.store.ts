@@ -8,6 +8,9 @@ import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { tap } from "rxjs/operators";
 import { map, switchAll } from "rxjs/operators";
 import { setDictionary } from "./app.updaters";
+import { NotificationsService } from "../services/notification.service";
+import { ColorQuizGeneratorService } from "../services/color-quiz-generator.service";
+import { tapResponse } from "@ngrx/operators";
 
 export const AppStore = signalStore(
     { providedIn: 'root' }, 
@@ -15,17 +18,28 @@ export const AppStore = signalStore(
     withProps(_ => {
         const _dictionariesService = inject(DictionariesService);
         const _languages = _dictionariesService.languages;
-
         return {
-            _dictionariesService, _languages
+            _dictionariesService, 
+            _languages,
+            _quizGeneratorService: inject(ColorQuizGeneratorService),
+            _notificationsService: inject(NotificationsService)
         }
     }),
     withMethods(store => {
         const _invalidateDictionary = rxMethod<string>(input$ => input$.pipe(
             tap(_ => patchState(store, setBusy(true))),
-            map((lang: string) => store._dictionariesService.getDictionaryWithDelay(lang)),
+            map((lang: string) => store._dictionariesService
+                .getDictionaryWithDelay(lang).pipe(
+                tapResponse({
+                    next: dict => patchState(store, setDictionary(dict), setBusy(false)),
+                    error: err => {
+                        console.log('Error loading dictionary:', err);
+                        store._notificationsService.error(`${err}`)
+                        patchState(store, setBusy(false));
+                    }
+                })),
+                ),
             switchAll(),  // mergAll gives us all obervables, switchAll only the latest
-            tap(dict => patchState(store, setDictionary(dict), setBusy(false)))
         ))
 
         return {

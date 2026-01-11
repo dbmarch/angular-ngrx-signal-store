@@ -13,6 +13,7 @@ export class NotificationsService {
   }
 
   error(message: string) {
+    console.log ("snackbar error called");
     this.openSnackBar(message, 'Ok', 'error-snackbar');
   }
 
