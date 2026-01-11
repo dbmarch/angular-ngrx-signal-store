@@ -6,11 +6,13 @@ import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { entityConfig, setAllEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { Book } from '../../../models/book.model';
 
+
 const bookConfig = entityConfig({
     entity: type<Book>(),
     collection: '_books', 
     selectId: book => book.id
 })
+
 
 export const BookPresenterStore = signalStore(
     withState(initialBookPresenterSlice), 
@@ -22,7 +24,6 @@ export const BookPresenterStore = signalStore(
         setBookId: signalMethod<number>(id => 
             patchState(store, { id })), 
         renameCurrentBook: (name: string) => {
-            console.log('Renaming book to', name);
             patchState(store, updateEntity({
                 id: store.id(), 
                 changes: { title: name}
