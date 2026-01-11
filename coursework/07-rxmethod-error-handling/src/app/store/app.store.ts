@@ -6,7 +6,7 @@ import { setBusy } from "./app.updaters";
 import { DictionariesService } from "../services/dictionaries.service";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { tap } from "rxjs/operators";
-import { map, switchAll } from "rxjs/operators";
+import { map, switchAll, switchMap } from "rxjs/operators";
 import { setDictionary } from "./app.updaters";
 import { NotificationsService } from "../services/notification.service";
 import { ColorQuizGeneratorService } from "../services/color-quiz-generator.service";
@@ -28,7 +28,7 @@ export const AppStore = signalStore(
     withMethods(store => {
         const _invalidateDictionary = rxMethod<string>(input$ => input$.pipe(
             tap(_ => patchState(store, setBusy(true))),
-            map((lang: string) => store._dictionariesService
+            switchMap((lang: string) => store._dictionariesService
                 .getDictionaryWithDelay(lang).pipe(
                 tapResponse({
                     next: dict => patchState(store, setDictionary(dict)),
@@ -37,7 +37,17 @@ export const AppStore = signalStore(
                     }
                 )),
                 ),
-            switchAll(),  // mergAll gives us all obervables, switchAll only the latest
+            // map((lang: string) => store._dictionariesService
+            //     .getDictionaryWithDelay(lang).pipe(
+            //     tapResponse({
+            //         next: dict => patchState(store, setDictionary(dict)),
+            //         error: err => store._notificationsService.error(`${err}`),
+            //         finalize: () => patchState(store, setBusy(false))
+            //         }
+            //     )),
+            //     ),
+            // switchAll(),  // mergAll gives us all obervables, switchAll only the latest
+
         ))
 
         return {
