@@ -20,6 +20,7 @@ import {
 import { DictionariesService } from '../services/dictionaries.service';
 import { switchMap, tap } from 'rxjs';
 import { NotificationsService } from '../services/notifications.service';
+import { withLocalStorage } from '../custom-features/wth-local-storage.feature';
 
 export const AppStore = signalStore(
   { providedIn: 'root' },
@@ -59,5 +60,6 @@ export const AppStore = signalStore(
       store._resetLanguages();
     },
   })), 
+  withLocalStorage('app-store'),
   withDevtools('app-store')
 );
