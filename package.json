@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@angular-architects/ngrx-toolkit": "^20.6.0"
+  }
+}

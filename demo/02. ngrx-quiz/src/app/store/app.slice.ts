@@ -5,10 +5,12 @@ export interface AppSlice {
     readonly possibleLanguages: string[];
 
     readonly selectedDictionary: Dictionary | null;
+    readonly isBusy: boolean;
 }
 
 export const initialAppSlice: AppSlice = {
     selectedLanguage: '', 
     possibleLanguages: [], 
     selectedDictionary: null,
+    isBusy: false
 }

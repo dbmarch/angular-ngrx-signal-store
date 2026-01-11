@@ -18,6 +18,10 @@ export function resetLanguages(languages: string[]): PartialStateUpdater<AppSlic
     })
 }
 
+export function setBusy(isBusy: boolean): PartialStateUpdater<AppSlice> {
+    return _ => ({ isBusy });
+}
+
 export function setDictionary(dictionary: Dictionary): PartialStateUpdater<AppSlice> {
     return _ => ({ selectedDictionary: dictionary });
 }
