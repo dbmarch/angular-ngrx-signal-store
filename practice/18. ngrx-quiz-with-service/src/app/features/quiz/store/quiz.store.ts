@@ -13,13 +13,15 @@ import { withDevtools } from "@angular-architects/ngrx-toolkit";
 import { withLocalStorage } from "../../../custom-features/with-local-storage.feature";
 import { setBusy, setIdle } from "../../../custom-features/with-busy/with-busy.updaters";
 import { withBusy } from "../../../custom-features/with-busy/with-busy.feature";
+import { withService } from "../../../custom-features/with-service/with-service.feature";
 
 export const QuizStore = signalStore(
     withState(initialQuizSlice),
     withBusy(),
-    withProps(_ => ({
-        _generatorService: inject(ColorQuizGeneratorService)
-    })),
+    withService(
+        () => inject(ColorQuizGeneratorService).createRandomQuizAsync(),
+        resetQuestions
+    ),
     withComputed((store) => {
         const appStore = inject(AppStore);
         const dictionary = appStore.selectedDictionary;
@@ -46,12 +48,7 @@ export const QuizStore = signalStore(
     withMethods(store => ({
         addAnswer: (index: number) => patchState(store, addAnswer(index)),
         reset: () => patchState(store, resetQuiz()),
-        generateQuiz: rxMethod<void>(trigger$ => trigger$.pipe(
-            tap(_ => patchState(store, setBusy())), 
-            map(_ => store._generatorService.createRandomQuizAsync()), 
-            exhaustAll(), 
-            tap(questions => patchState(store, setIdle(), resetQuestions(questions)),
-        )))
+        generateQuiz: () => store._load()
     })), 
     withLocalStorage('quiz-store'),
     withDevtools('quiz-store')
